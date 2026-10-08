@@ -3,6 +3,8 @@ import { IsEmail, IsNotEmpty, IsString, MaxLength, MinLength } from "class-valid
 export class LoginDto {
   @IsNotEmpty()
   @IsEmail()
+    @MinLength(10)
+  @MaxLength(30)
   email: string;
 
   @IsNotEmpty()
