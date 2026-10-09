@@ -11,3 +11,9 @@ export enum DefaultStatus {
   SUSPENDED = 'SUSPENDED',
   PENDING = 'PENDING',
 }
+
+
+export enum ClassTierEnum{
+  SECONDARY = 'SECONDARY',
+  HIGHER_SECONDARY = 'HIGHER_SECONDARY'
+}

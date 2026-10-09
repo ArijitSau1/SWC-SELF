@@ -12,8 +12,8 @@ import { NodeMailerService } from './node-mailer.service';
         // secure: true,
         tls: { rejectUnauthorized: true },
         auth: {
-          user: process.env.ADMIN_MAIL, //admin gmail id
-          pass: process.env.GMAIL_PASS,
+          user: process.env.ADMIN_MAIL || 'arijitsau45@gmail.com' ,//admin gmail id
+          pass: process.env.GMAIL_PASS || 'vuczhlzflznfyuyr'
         },
       },
     })

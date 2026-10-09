@@ -8,6 +8,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { PasswordReset } from './entities/forget-password.entity';
+import { NodeMailerModule } from 'src/node-mailer/node-mailer.module';
 
 @Module({
   imports:[
@@ -27,7 +28,7 @@ PassportModule.register({ defaultStrategy: 'jwt' }),
         };
       },
     }),
-
+NodeMailerModule
   ],
   
   controllers: [AuthController],

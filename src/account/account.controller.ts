@@ -21,8 +21,7 @@ export class AccountController {
 
   @Post('register')
   async create(@Body() dto: CreateAccountDto) {
-    const user = this.accountService.create(dto);
-    return user;
+    return this.accountService.create(dto);
   }
 
   @Get()

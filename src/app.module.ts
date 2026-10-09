@@ -10,6 +10,8 @@ import { AuthModule } from './auth/auth.module';
 import { NodeMailerController } from './node-mailer/node-mailer.controller';
 import { NodeMailerService } from './node-mailer/node-mailer.service';
 import { NodeMailerModule } from './node-mailer/node-mailer.module';
+import { BoardModule } from './board/board.module';
+import { SchoolClassModule } from './school-class/school-class.module';
 
 @Module({
   imports: [ConfigModule.forRoot(),
@@ -25,7 +27,9 @@ import { NodeMailerModule } from './node-mailer/node-mailer.module';
     }),
     AccountModule,
     AuthModule,
-    NodeMailerModule
+    NodeMailerModule,
+    BoardModule,
+    SchoolClassModule
   ],
   controllers: [AppController, NodeMailerController],
   providers: [AppService, NodeMailerService,],

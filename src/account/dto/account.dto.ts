@@ -1,6 +1,6 @@
 import { Type } from 'class-transformer';
 import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, Max, MaxLength, Min, MinLength } from 'class-validator';
-import { DefaultStatus } from 'src/enum';
+import { DefaultStatus, UserRole } from 'src/enum';
 
 export class CreateAccountDto {
   @IsNotEmpty()
@@ -51,5 +51,9 @@ export class PaginationDto {
   @IsNotEmpty()
   @IsEnum(DefaultStatus)
   status: DefaultStatus;
+
+  @IsNotEmpty()
+  @IsEnum(UserRole)
+  role: UserRole;
 
 }

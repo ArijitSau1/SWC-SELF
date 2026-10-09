@@ -19,6 +19,9 @@ export class PasswordReset {
   @Column({nullable:true})
   expiresAt: Date;
 
+  @Column({ default: false })
+  verified: boolean;
+
 
   @CreateDateColumn()
   createdAt: Date;

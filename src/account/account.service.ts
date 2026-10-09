@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Account } from './entities/account.entity';
-import { Repository } from 'typeorm';
+import { Brackets, Repository } from 'typeorm';
 import { CreateAccountDto, PaginationDto } from './dto/account.dto';
 import * as bcrypt from 'bcrypt';
 import { DefaultStatus } from 'src/enum';
@@ -31,7 +31,6 @@ export class AccountService {
       password: encryptedPassword,
     });
     const payload = await this.repo.save(obj);
-    console.log(payload);
     const object = Object.create({
       accountId: payload.id,
     });
@@ -42,16 +41,24 @@ export class AccountService {
     const keyword = dto.keyword || '';
     const [result, total] = await this.repo
       .createQueryBuilder('account')
-      .select([
-        'account.id',
-        'account.name',
-        'account.email',
-        'account.createdAt',
-      ])
-      .where('account.email LIKE :email OR account.name LIKE :name', {
-        email: '%' + keyword + '%',
+      .where(
+        'account.status = :status AND account.roles = :roles',
+        {
+          status: dto.status,
+          roles: dto.role,
+        },
+      )
+        .andWhere(
+        new Brackets((qb) => {
+          qb.where(
+            'account.email LIKE :email OR account.name LIKE :name',
+            {
+              email: '%' + keyword + '%',
         name: '%' + keyword + '%',
-      })
+            },
+          );
+        }),
+      )
       .skip(dto.offset)
       .take(dto.limit)
       .getManyAndCount();
