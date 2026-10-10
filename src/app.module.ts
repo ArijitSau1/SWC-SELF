@@ -12,6 +12,9 @@ import { NodeMailerService } from './node-mailer/node-mailer.service';
 import { NodeMailerModule } from './node-mailer/node-mailer.module';
 import { BoardModule } from './board/board.module';
 import { SchoolClassModule } from './school-class/school-class.module';
+import { StreamModule } from './stream/stream.module';
+import { SemesterModule } from './semester/semester.module';
+import { SubjectModule } from './subject/subject.module';
 
 @Module({
   imports: [ConfigModule.forRoot(),
@@ -22,14 +25,17 @@ import { SchoolClassModule } from './school-class/school-class.module';
       username: process.env.RE_USER_NAME,
       password: process.env.RE_DB_PASS,
       database: process.env.RE_DB_NAME,
-      synchronize: true,
+      synchronize: false,
       autoLoadEntities: true,
     }),
     AccountModule,
     AuthModule,
     NodeMailerModule,
     BoardModule,
-    SchoolClassModule
+    SchoolClassModule,
+    StreamModule,
+    SemesterModule,
+    SubjectModule
   ],
   controllers: [AppController, NodeMailerController],
   providers: [AppService, NodeMailerService,],

@@ -7,20 +7,18 @@ import {
   UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
-import { ClassTierEnum, DefaultStatus } from 'src/enum';
-import { Board } from 'src/board/entities/board.entity';
-import { Stream } from 'src/stream/entities/stream.entity';
 
-@Entity('school_class')
-export class SchoolClass {
+import { SchoolClass } from '../../school-class/entities/school-class.entity';
+import { DefaultStatus } from 'src/enum';
+import { Semester } from 'src/semester/entities/semester.entity';
+
+@Entity('stream')
+export class Stream {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ type: 'varchar', length: 100, nullable: true })
   name: string;
-
-  @Column({ type: 'enum', enum: ClassTierEnum, nullable: true })
-  tier: ClassTierEnum;
 
   @Column({ type: 'enum', enum: DefaultStatus, default: DefaultStatus.ACTIVE })
   status: DefaultStatus;
@@ -31,13 +29,12 @@ export class SchoolClass {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => Board, (board) => board.schoolClasses, {
-    cascade: true,
+    @ManyToOne(() => SchoolClass, (schoolClass) => schoolClass.streams, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
-  board: Board;
+  schoolClass: SchoolClass;
 
-  @OneToMany(() => Stream, (stream) => stream.schoolClass)
-  streams: Stream[];
+  @OneToMany(() => Semester, (semester) => semester.stream)
+  semesters: Semester[];
 }
