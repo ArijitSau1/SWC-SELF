@@ -5,10 +5,13 @@ import {
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 
 import { DefaultStatus } from 'src/enum';
 import { Stream } from 'src/stream/entities/stream.entity';
+import { Subject } from 'src/subject/entities/subject.entity';
+import { DegreeUniversity } from 'src/degree-university/entities/degree-university.entity';
 
 @Entity('semester')
 export class Semester {
@@ -28,8 +31,24 @@ export class Semester {
   updatedAt: Date;
 
   @ManyToOne(() => Stream, (stream) => stream.semesters, {
+    cascade: true,
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
   stream: Stream;
+
+  @OneToMany(() => Subject, (subject) => subject.semester)
+  subjects: Subject[];
+
+
+  @ManyToOne(
+  () => DegreeUniversity,
+  (degreeUniversity) => degreeUniversity.semesters,
+  {
+    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  },
+)
+degreeUniversity: DegreeUniversity;
 }

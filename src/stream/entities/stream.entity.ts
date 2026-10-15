@@ -30,6 +30,7 @@ export class Stream {
   updatedAt: Date;
 
     @ManyToOne(() => SchoolClass, (schoolClass) => schoolClass.streams, {
+    cascade: true,
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })

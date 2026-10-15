@@ -15,6 +15,14 @@ import { SchoolClassModule } from './school-class/school-class.module';
 import { StreamModule } from './stream/stream.module';
 import { SemesterModule } from './semester/semester.module';
 import { SubjectModule } from './subject/subject.module';
+import { DegreeModule } from './degree/degree.module';
+import { UniversityModule } from './university/university.module';
+import { DegreeUniversityModule } from './degree-university/degree-university.module';
+import { StudyMaterialModule } from './study-material/study-material.module';
+import { VideoLectureController } from './video-lecture/video-lecture.controller';
+import { VideoLectureModule } from './video-lecture/video-lecture.module';
+import { AudioLectureModule } from './audio-lecture/audio-lecture.module';
+import { MockTestModule } from './mock-test/mock-test.module';
 
 @Module({
   imports: [ConfigModule.forRoot(),
@@ -25,7 +33,7 @@ import { SubjectModule } from './subject/subject.module';
       username: process.env.RE_USER_NAME,
       password: process.env.RE_DB_PASS,
       database: process.env.RE_DB_NAME,
-      synchronize: false,
+      synchronize: true,
       autoLoadEntities: true,
     }),
     AccountModule,
@@ -35,9 +43,16 @@ import { SubjectModule } from './subject/subject.module';
     SchoolClassModule,
     StreamModule,
     SemesterModule,
-    SubjectModule
+    SubjectModule,
+    DegreeModule,
+    UniversityModule,
+    DegreeUniversityModule,
+    StudyMaterialModule,
+    VideoLectureModule,
+    AudioLectureModule,
+    MockTestModule
   ],
-  controllers: [AppController, NodeMailerController],
+  controllers: [AppController, NodeMailerController,],
   providers: [AppService, NodeMailerService,],
 })
 export class AppModule {}

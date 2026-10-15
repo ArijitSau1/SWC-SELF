@@ -10,6 +10,7 @@ import {
 import { ClassTierEnum, DefaultStatus } from 'src/enum';
 import { Board } from 'src/board/entities/board.entity';
 import { Stream } from 'src/stream/entities/stream.entity';
+import { Subject } from 'src/subject/entities/subject.entity';
 
 @Entity('school_class')
 export class SchoolClass {
@@ -40,4 +41,7 @@ export class SchoolClass {
 
   @OneToMany(() => Stream, (stream) => stream.schoolClass)
   streams: Stream[];
+
+  @OneToMany(() => Subject, (subject) => subject.schoolClass)
+  subjects: Subject[];
 }

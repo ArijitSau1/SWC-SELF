@@ -17,3 +17,9 @@ export enum ClassTierEnum{
   SECONDARY = 'SECONDARY',
   HIGHER_SECONDARY = 'HIGHER_SECONDARY'
 }
+
+
+export enum PaidOrFree {
+  FREE = 'FREE',
+  PAID = 'PAID',
+}
