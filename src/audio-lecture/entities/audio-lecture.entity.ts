@@ -41,6 +41,7 @@ export class AudioLecture {
   updatedAt: Date;
 
   @ManyToOne(() => Subject, (subject) => subject.audioLectures, {
+    cascade: true,
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })

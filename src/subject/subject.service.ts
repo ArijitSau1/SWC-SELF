@@ -49,7 +49,7 @@ export class SubjectService {
   async remove(id: string) {
     const subject = await this.repo.findOne({ where: { id } });
     if (!subject) {
-      throw new NotFoundException('User not found!');
+      throw new NotFoundException('Subject not found!');
     }
     const obj = Object.assign(subject, { status: DefaultStatus.DELETED });
     return this.repo.save(obj);

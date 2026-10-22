@@ -23,6 +23,9 @@ import { VideoLectureController } from './video-lecture/video-lecture.controller
 import { VideoLectureModule } from './video-lecture/video-lecture.module';
 import { AudioLectureModule } from './audio-lecture/audio-lecture.module';
 import { MockTestModule } from './mock-test/mock-test.module';
+import { QuestionModule } from './question/question.module';
+import { TestAttemptModule } from './test-attempt/test-attempt.module';
+import { StudentAnswerModule } from './student-answer/student-answer.module';
 
 @Module({
   imports: [ConfigModule.forRoot(),
@@ -33,7 +36,7 @@ import { MockTestModule } from './mock-test/mock-test.module';
       username: process.env.RE_USER_NAME,
       password: process.env.RE_DB_PASS,
       database: process.env.RE_DB_NAME,
-      synchronize: true,
+      synchronize: false,
       autoLoadEntities: true,
     }),
     AccountModule,
@@ -50,7 +53,10 @@ import { MockTestModule } from './mock-test/mock-test.module';
     StudyMaterialModule,
     VideoLectureModule,
     AudioLectureModule,
-    MockTestModule
+    MockTestModule,
+    QuestionModule,
+    TestAttemptModule,
+    StudentAnswerModule
   ],
   controllers: [AppController, NodeMailerController,],
   providers: [AppService, NodeMailerService,],

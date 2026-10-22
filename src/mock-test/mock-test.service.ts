@@ -5,6 +5,7 @@ import { Brackets, Repository } from 'typeorm';
 import { Subject } from 'src/subject/entities/subject.entity';
 import { CreateMockTestDto } from './dto/create-mock-test.dto';
 import { DefaultStatusPaginationDto } from 'src/common/dto/default-status-pagination.dto';
+import { DefaultStatus } from 'src/enum';
 
 @Injectable()
 export class MockTestService {
@@ -59,4 +60,17 @@ export class MockTestService {
       .getManyAndCount();
     return { result, count };
   }
+
+    async findOne(id: string) {
+      return this.repo.findOne({ where: { id } });
+    }
+  
+    async remove(id: string) {
+      const mockTest = await this.repo.findOne({ where: { id } });
+      if (!mockTest) {
+        throw new NotFoundException('Mock test not found!');
+      }
+      const obj = Object.assign(mockTest, { status: DefaultStatus.DELETED });
+      return this.repo.save(obj);
+    }
 }

@@ -1,9 +1,11 @@
 
 import { DefaultStatus, UserRole } from 'src/enum';
+import { TestAttempt } from 'src/test-attempt/entities/test-attempt.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'; 
@@ -36,6 +38,9 @@ export class Account {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(() => TestAttempt, (testAttempt) => testAttempt.account)
+  testAttempts: TestAttempt[];
 
 }
 

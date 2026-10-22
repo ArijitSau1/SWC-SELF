@@ -41,6 +41,7 @@ export class VideoLecture {
   updatedAt: Date;
 
   @ManyToOne(() => Subject, (subject) => subject.videoLectures, {
+    cascade: true,
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })

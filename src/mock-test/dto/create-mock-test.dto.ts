@@ -8,6 +8,7 @@ import {
   IsEnum,
   Min,
   MaxLength,
+  MinLength,
 } from 'class-validator';
 import { PaidOrFree } from 'src/enum';
 
@@ -18,9 +19,26 @@ export class CreateMockTestDto {
   title: string;
 
   @IsOptional()
+  @IsString()
+  @MinLength(0)
+  @MaxLength(100)
+  class_name: string;
+
+  @IsOptional()
+  @IsString()
+  @MinLength(0)
+  @MaxLength(100)
+  semester_name: string;
+
+  @IsOptional()
   @IsInt()
   @Min(0)
-  total_questions?: number;
+  total_questions: number;
+
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  duration: number;
 
   @IsOptional()
   @IsInt()
