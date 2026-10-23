@@ -1,4 +1,5 @@
 import { AudioLecture } from 'src/audio-lecture/entities/audio-lecture.entity';
+import { CompetitiveExam } from 'src/competitive-exam/entities/competitive-exam.entity';
 import { DefaultStatus } from 'src/enum';
 import { MockTest } from 'src/mock-test/entities/mock-test.entity';
 import { SchoolClass } from 'src/school-class/entities/school-class.entity';
@@ -38,7 +39,7 @@ export class Subject {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
-  schoolClass: SchoolClass | null;
+  schoolClass: SchoolClass;
 
   @ManyToOne(() => Semester, (semester) => semester.subjects, {
     cascade: true,
@@ -46,7 +47,7 @@ export class Subject {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
-  semester: Semester | null;
+  semester: Semester;
 
   @OneToMany(() => StudyMaterial, (studyMaterial) => studyMaterial.subject)
   studyMaterials: StudyMaterial[];
@@ -59,4 +60,13 @@ export class Subject {
 
   @OneToMany(() => MockTest, (mockTest) => mockTest.subject)
   mockTests: MockTest[];
+
+  @ManyToOne(() => CompetitiveExam,(competitiveExam) => competitiveExam.subjects,
+  {
+    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  },
+)
+competitiveExam: CompetitiveExam;
 }

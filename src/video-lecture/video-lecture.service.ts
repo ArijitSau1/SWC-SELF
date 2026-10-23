@@ -44,6 +44,15 @@ export class VideoLectureService {
     }
   }
 
+  async video(image: string, result: VideoLecture) {
+    const obj = Object.assign(result, {
+      video_file_url: process.env.RE_CDN_LINK + image,
+      video_file_path: image,
+    });
+
+    return this.repo.save(obj);
+  }
+
   async findAll(dto: DefaultStatusPaginationDto) {
     const keyword = dto.keyword || '';
     const [result, count] = await this.repo
@@ -68,7 +77,15 @@ export class VideoLectureService {
   }
 
   async findOne(id: string) {
-    return this.repo.findOne({ where: { id } });
+    const result = await this.repo.findOne({
+      where: { id },
+    });
+
+    if (!result) {
+      throw new NotFoundException('video lecture not found');
+    }
+
+    return result;
   }
 
   async remove(id: string) {

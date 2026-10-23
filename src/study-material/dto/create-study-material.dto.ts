@@ -1,4 +1,3 @@
-
 import {
   IsNotEmpty,
   IsString,
@@ -21,11 +20,6 @@ export class CreateStudyMaterialDto {
   @MaxLength(200)
   title: string;
 
-
-  @IsString()
-  @IsNotEmpty()
-  @MaxLength(255)
-  pdf_file_url: string;
 
   @IsOptional()
   @IsNumber()

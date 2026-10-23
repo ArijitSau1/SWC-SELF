@@ -44,6 +44,15 @@ export class StudyMaterialService {
     }
   }
 
+  async pdf(image: string, result: StudyMaterial) {
+    const obj = Object.assign(result, {
+      pdf_file_url: process.env.RE_CDN_LINK + image,
+      pdf_file_path: image,
+    });
+
+    return this.repo.save(obj);
+  }
+
   async findAll(dto: DefaultStatusPaginationDto) {
     const keyword = dto.keyword || '';
     const [result, count] = await this.repo
@@ -68,7 +77,14 @@ export class StudyMaterialService {
   }
 
   async findOne(id: string) {
-    return this.repo.findOne({ where: { id } });
+    const result = await this.repo.findOne({
+      where: { id },
+    });
+
+    if (!result) {
+      throw new NotFoundException('Study material not found');
+    }
+    return result;
   }
 
   async remove(id: string) {

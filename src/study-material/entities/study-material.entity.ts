@@ -1,4 +1,3 @@
-
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -16,11 +15,14 @@ export class StudyMaterial {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar', length: 200,nullable:true })
+  @Column({ type: 'varchar', length: 200, nullable: true })
   title: string;
 
-  @Column({ type: 'varchar', length: 255,nullable:true })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   pdf_file_url: string;
+
+  @Column({ type: 'varchar', length: 500, nullable: true })
+  pdf_file_path: string;
 
   @Column({ type: 'float', nullable: true })
   rating: number;
@@ -28,7 +30,7 @@ export class StudyMaterial {
   @Column({ type: 'int', default: 0 })
   total_chapters: number;
 
-  @Column({type: 'enum',enum: PaidOrFree,default: PaidOrFree.FREE})
+  @Column({type: 'enum', enum: PaidOrFree, default: PaidOrFree.FREE})
   access_type: PaidOrFree;
 
   @Column({type: 'decimal',precision: 10,scale: 2,default: 0})

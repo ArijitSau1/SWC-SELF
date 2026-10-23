@@ -26,6 +26,8 @@ import { MockTestModule } from './mock-test/mock-test.module';
 import { QuestionModule } from './question/question.module';
 import { TestAttemptModule } from './test-attempt/test-attempt.module';
 import { StudentAnswerModule } from './student-answer/student-answer.module';
+import { CompetitiveCategoryModule } from './competitive-category/competitive-category.module';
+import { CompetitiveExamModule } from './competitive-exam/competitive-exam.module';
 
 @Module({
   imports: [ConfigModule.forRoot(),
@@ -56,7 +58,9 @@ import { StudentAnswerModule } from './student-answer/student-answer.module';
     MockTestModule,
     QuestionModule,
     TestAttemptModule,
-    StudentAnswerModule
+    StudentAnswerModule,
+    CompetitiveCategoryModule,
+    CompetitiveExamModule
   ],
   controllers: [AppController, NodeMailerController,],
   providers: [AppService, NodeMailerService,],
