@@ -61,7 +61,7 @@ export class BoardService {
   async remove(id: string) {
     const board = await this.repo.findOne({ where: { id } });
     if (!board) {
-      throw new NotFoundException('User not found!');
+      throw new NotFoundException('User not found');
     }
     const obj = Object.assign(board, { status: DefaultStatus.DELETED });
     return this.repo.save(obj);
