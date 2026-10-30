@@ -71,7 +71,7 @@ export class SchoolClassService {
     async remove(id: string) {
       const schoolClass = await this.repo.findOne({ where: { id } });
       if (!schoolClass) {
-        throw new NotFoundException('User not found!');
+        throw new NotFoundException('class not found');
       }
       const obj = Object.assign(schoolClass, { status: DefaultStatus.DELETED });
       return this.repo.save(obj);

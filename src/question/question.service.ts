@@ -58,7 +58,7 @@ export class QuestionService {
     async remove(id: string) {
       const question = await this.repo.findOne({ where: { id } });
       if (!question) {
-        throw new NotFoundException('Question not found!');
+        throw new NotFoundException('Question not found');
       }
       const obj = Object.assign(Question, { status: DefaultStatus.DELETED });
       return this.repo.save(obj);

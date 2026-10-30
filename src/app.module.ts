@@ -28,6 +28,10 @@ import { TestAttemptModule } from './test-attempt/test-attempt.module';
 import { StudentAnswerModule } from './student-answer/student-answer.module';
 import { CompetitiveCategoryModule } from './competitive-category/competitive-category.module';
 import { CompetitiveExamModule } from './competitive-exam/competitive-exam.module';
+import { UserPermissionsModule } from './user-permissions/user-permissions.module';
+import { PermissionsModule } from './permissions/permissions.module';
+import { MenusModule } from './menus/menus.module';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [ConfigModule.forRoot(),
@@ -40,6 +44,9 @@ import { CompetitiveExamModule } from './competitive-exam/competitive-exam.modul
       database: process.env.RE_DB_NAME,
       synchronize: false,
       autoLoadEntities: true,
+    }),
+    CacheModule.register({
+      isGlobal: true,
     }),
     AccountModule,
     AuthModule,
@@ -60,7 +67,10 @@ import { CompetitiveExamModule } from './competitive-exam/competitive-exam.modul
     TestAttemptModule,
     StudentAnswerModule,
     CompetitiveCategoryModule,
-    CompetitiveExamModule
+    CompetitiveExamModule,
+    UserPermissionsModule,
+    PermissionsModule,
+    MenusModule
   ],
   controllers: [AppController, NodeMailerController,],
   providers: [AppService, NodeMailerService,],

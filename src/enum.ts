@@ -1,8 +1,7 @@
 export enum UserRole {
-    USER = 'USER',
-    ADMIN = 'ADMIN'
+  USER = 'USER',
+  ADMIN = 'ADMIN',
 }
-
 
 export enum DefaultStatus {
   ACTIVE = 'ACTIVE',
@@ -12,14 +11,19 @@ export enum DefaultStatus {
   PENDING = 'PENDING',
 }
 
-
-export enum ClassTierEnum{
+export enum ClassTierEnum {
   SECONDARY = 'SECONDARY',
-  HIGHER_SECONDARY = 'HIGHER_SECONDARY'
+  HIGHER_SECONDARY = 'HIGHER_SECONDARY',
 }
-
 
 export enum PaidOrFree {
   FREE = 'FREE',
   PAID = 'PAID',
+}
+
+export enum PermissionAction {
+  CREATE = 'Create',
+  READ = 'Read',
+  UPDATE = 'Update',
+  DELETE = 'Delete',
 }

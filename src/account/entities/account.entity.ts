@@ -1,6 +1,7 @@
 
 import { DefaultStatus, UserRole } from 'src/enum';
 import { TestAttempt } from 'src/test-attempt/entities/test-attempt.entity';
+import { UserPermission } from 'src/user-permissions/entities/user-permission.entity';
 import {
   Column,
   CreateDateColumn,
@@ -41,6 +42,9 @@ export class Account {
 
   @OneToMany(() => TestAttempt, (testAttempt) => testAttempt.account)
   testAttempts: TestAttempt[];
+
+   @OneToMany(() => UserPermission, (userPermission) => userPermission.account)
+   userPermission: UserPermission[];
 
 }
 

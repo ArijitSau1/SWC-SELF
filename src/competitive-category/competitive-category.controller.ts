@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { CompetitiveCategoryService } from './competitive-category.service';
 import { CreateCompetitiveCategoryDto } from './dto/create-competitive-category.dto';
 import { DefaultStatusPaginationDto } from 'src/common/dto/default-status-pagination.dto';

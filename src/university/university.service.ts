@@ -56,7 +56,7 @@ export class UniversityService {
             async remove(id: string) {
               const university = await this.repo.findOne({ where: { id } });
               if (!university) {
-                throw new NotFoundException('User not found!');
+                throw new NotFoundException('University not found');
               }
               const obj = Object.assign(university, { status: DefaultStatus.DELETED });
               return this.repo.save(obj);

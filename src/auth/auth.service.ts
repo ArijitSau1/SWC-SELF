@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Account } from 'src/account/entities/account.entity';
@@ -7,14 +7,20 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { PasswordReset } from './entities/forget-password.entity';
 import { NodeMailerService } from 'src/node-mailer/node-mailer.service';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import type { Cache } from 'cache-manager';
+import { UserPermission } from 'src/user-permissions/entities/user-permission.entity';
 
 @Injectable()
 export class AuthService {
   constructor(
     private jwtService: JwtService,
     @InjectRepository(Account) private readonly repo: Repository<Account>,
-    @InjectRepository(PasswordReset) private prRepo:Repository<PasswordReset>,
-    private readonly nodeMailerService:NodeMailerService
+    @InjectRepository(PasswordReset) private prRepo: Repository<PasswordReset>,
+    @InjectRepository(UserPermission)
+    private readonly upRepo: Repository<UserPermission>,
+    private readonly nodeMailerService: NodeMailerService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
   async signIn(email: string, password: string) {
@@ -31,6 +37,29 @@ export class AuthService {
   validate(id: string) {
     return this.getUserDetails(id);
   }
+
+  findPermission(accountId: string) {
+    return this.getPermissions(accountId);
+  }
+
+  private getPermissions = async (accountId: string): Promise<any> => {
+    let result = await this.cacheManager.get('userPermission' + accountId);
+    if (!result) {
+      result = await this.upRepo.find({
+        relations: {
+          permission: true,
+          menu: true,
+        },
+        where: { accountId, status: true },
+      });
+      this.cacheManager.set(
+        'userPermission' + accountId,
+        result,
+        7 * 24 * 60 * 60 * 1000,
+      );
+    }
+    return result;
+  };
 
   private readonly getUserDetails = async (id: string): Promise<any> => {
     const query = this.repo.createQueryBuilder('account');
@@ -61,25 +90,26 @@ export class AuthService {
     const otp = this.generateOtp();
 
     const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
-    await this.prRepo.save({email,otp,expiresAt});
-    await this.nodeMailerService.sendForgotPasswordOtp(email,otp);
+    await this.prRepo.save({ email, otp, expiresAt });
+    await this.nodeMailerService.sendForgotPasswordOtp(email, otp);
 
-    return{
+    return {
       message: 'Verification code sent successfully',
-    }
+    };
   }
 
-  async otpVerify(email:string,otp:string){
-    const verifyCode=await this.prRepo.findOne({
-      where:{
-        email,otp
-      }
+  async otpVerify(email: string, otp: string) {
+    const verifyCode = await this.prRepo.findOne({
+      where: {
+        email,
+        otp,
+      },
     });
     if (!verifyCode) {
       throw new UnauthorizedException('Invalid otp');
     }
 
-        if (verifyCode.verified) {
+    if (verifyCode.verified) {
       throw new UnauthorizedException('Verification code already used');
     }
 
@@ -89,26 +119,28 @@ export class AuthService {
 
     verifyCode.verified = true;
 
-        await this.prRepo.save(verifyCode);
+    await this.prRepo.save(verifyCode);
 
     return {
       message: 'Verification successful',
     };
   }
 
-  async createNewPass(email:string,newPass:string){
-    const resetPassReq = await this.prRepo.findOne({where:{email,verified:true}});
+  async createNewPass(email: string, newPass: string) {
+    const resetPassReq = await this.prRepo.findOne({
+      where: { email, verified: true },
+    });
 
-      if (!resetPassReq) {
+    if (!resetPassReq) {
       throw new UnauthorizedException('Please verify the OTP first');
     }
 
-     const user = await this.repo
+    const user = await this.repo
       .createQueryBuilder('account')
       .where('account.email = :email', { email })
       .getOne();
 
-        if (!user) {
+    if (!user) {
       throw new UnauthorizedException('Account not found');
     }
 
@@ -118,9 +150,8 @@ export class AuthService {
 
     await this.prRepo.delete(resetPassReq.id);
 
-     return {
+    return {
       message: 'Password reset successfully',
     };
-
   }
 }

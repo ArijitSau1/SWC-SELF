@@ -68,7 +68,7 @@ export class MockTestService {
     async remove(id: string) {
       const mockTest = await this.repo.findOne({ where: { id } });
       if (!mockTest) {
-        throw new NotFoundException('Mock test not found!');
+        throw new NotFoundException('Mock test not found');
       }
       const obj = Object.assign(mockTest, { status: DefaultStatus.DELETED });
       return this.repo.save(obj);

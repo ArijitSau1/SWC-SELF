@@ -9,11 +9,12 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { PasswordReset } from './entities/forget-password.entity';
 import { NodeMailerModule } from 'src/node-mailer/node-mailer.module';
+import { UserPermission } from 'src/user-permissions/entities/user-permission.entity';
 
 @Module({
   imports:[
   TypeOrmModule.forFeature([
-    Account,PasswordReset
+    Account,PasswordReset,UserPermission
   ]),
 PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({

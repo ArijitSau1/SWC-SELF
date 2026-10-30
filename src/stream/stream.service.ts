@@ -39,7 +39,7 @@ export class StreamService {
   async remove(id: string) {
     const stream = await this.repo.findOne({ where: { id } });
     if (!stream) {
-      throw new NotFoundException('User not found!');
+      throw new NotFoundException('Stream not found');
     }
     const obj = Object.assign(stream, { status: DefaultStatus.DELETED });
     return this.repo.save(obj);

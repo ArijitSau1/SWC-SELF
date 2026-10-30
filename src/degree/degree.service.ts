@@ -56,7 +56,7 @@ export class DegreeService {
       async remove(id: string) {
         const degree = await this.repo.findOne({ where: { id } });
         if (!degree) {
-          throw new NotFoundException('User not found!');
+          throw new NotFoundException('Degree not found');
         }
         const obj = Object.assign(degree, { status: DefaultStatus.DELETED });
         return this.repo.save(obj);
