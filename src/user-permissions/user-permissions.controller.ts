@@ -5,7 +5,10 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 import { PermissionsGuard } from 'src/auth/guards/permissions.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { PermissionAction, UserRole } from 'src/enum';
-import { CreateUserPermissionDto, UpdatePermissionDto } from './dto/permission.dto';
+import {
+  CreateUserPermissionDto,
+  UpdatePermissionDto,
+} from './dto/permission.dto';
 import { UserPermissionsService } from './user-permissions.service';
 
 @Controller('user-permissions')
@@ -16,10 +19,9 @@ export class UserPermissionsController {
 
   @Post()
   @UseGuards(AuthGuard('jwt'))
-  async create(@Body() dto:CreateUserPermissionDto[]){
+  async create(@Body() dto: CreateUserPermissionDto[]) {
     this.userPermissionsService.create(dto);
   }
-
 
   // @Put(':id')
   // @UseGuards(AuthGuard('jwt'), RolesGuard, PermissionsGuard)

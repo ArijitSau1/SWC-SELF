@@ -1,14 +1,29 @@
-import { Controller, Delete, Get, Param, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { SubjectService } from './subject.service';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { UserRole } from 'src/enum';
 import { DefaultStatusPaginationDto } from 'src/common/dto/default-status-pagination.dto';
+import { CreateSubjectDto } from './dto/create-subject.dto';
 
 @Controller('subject')
 export class SubjectController {
   constructor(private readonly subjectService: SubjectService) {}
+
+  @Post()
+  create(@Body() dto: CreateSubjectDto) {
+    return this.subjectService.create(dto);
+  }
 
   @Get()
   @UseGuards(AuthGuard('jwt'), RolesGuard)

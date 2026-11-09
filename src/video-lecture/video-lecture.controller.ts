@@ -24,6 +24,7 @@ import { UserRole } from 'src/enum';
 import { DefaultStatusPaginationDto } from 'src/common/dto/default-status-pagination.dto';
 import { VideoLectureService } from './video-lecture.service';
 import { CreateVideoLactureDto } from './dto/create-video-lecture.dto';
+import { videoFileFilter } from 'src/utils/fileUpload.utils';
 
 @Controller('video-lecture')
 export class VideoLectureController {
@@ -34,9 +35,9 @@ export class VideoLectureController {
     return this.videoLactureService.create(dto);
   }
 
-  @Put('video/:id')
-  @UseGuards(AuthGuard('jwt'))
-  @Roles(UserRole.ADMIN)
+  @Put(':id')
+  // @UseGuards(AuthGuard('jwt'))
+  // @Roles(UserRole.ADMIN)
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
@@ -49,16 +50,14 @@ export class VideoLectureController {
           return callback(null, `${randomName}${extname(file.originalname)}`);
         },
       }),
+      fileFilter: videoFileFilter,
     }),
   )
   async video(
     @Param('id') id: string,
     @UploadedFile(
       new ParseFilePipe({
-        validators: [
-          new FileTypeValidator({ fileType: '.mp4' }),
-          new MaxFileSizeValidator({ maxSize: 100 * 1024 * 1024 }),
-        ],
+        validators: [new MaxFileSizeValidator({ maxSize: 100 * 1024 * 1024 })],
       }),
     )
     file: Express.Multer.File,

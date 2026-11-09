@@ -1,4 +1,12 @@
-import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { TestAttemptService } from './test-attempt.service';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
@@ -7,10 +15,30 @@ import { UserRole } from 'src/enum';
 import { DefaultStatusPaginationDto } from 'src/common/dto/default-status-pagination.dto';
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { Account } from 'src/account/entities/account.entity';
+import { CreateTestAttemptDto } from './dto/create-test-attempt.dto';
 
 @Controller('test-attempt')
 export class TestAttemptController {
   constructor(private readonly testAttemptService: TestAttemptService) {}
+
+  @Post()
+   @UseGuards(AuthGuard('jwt'))
+  async create(
+    @Body() dto: CreateTestAttemptDto,
+    @CurrentUser() user: Account,
+  ) {
+    return this.testAttemptService.create(dto, user.id);
+  }
+
+
+   @Post('submit/:id')
+   @UseGuards(AuthGuard('jwt'))
+  async submit(
+    @Param('id') id: string,
+    @CurrentUser() user: Account,
+  ) {
+    return this.testAttemptService.submit(id, user.id);
+  }
 
   @Get()
   @UseGuards(AuthGuard('jwt'), RolesGuard)

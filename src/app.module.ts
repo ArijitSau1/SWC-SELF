@@ -32,6 +32,7 @@ import { UserPermissionsModule } from './user-permissions/user-permissions.modul
 import { PermissionsModule } from './permissions/permissions.module';
 import { MenusModule } from './menus/menus.module';
 import { CacheModule } from '@nestjs/cache-manager';
+import { NewsModule } from './news/news.module';
 
 @Module({
   imports: [ConfigModule.forRoot(),
@@ -42,7 +43,7 @@ import { CacheModule } from '@nestjs/cache-manager';
       username: process.env.RE_USER_NAME,
       password: process.env.RE_DB_PASS,
       database: process.env.RE_DB_NAME,
-      synchronize: false,
+      synchronize: true,
       autoLoadEntities: true,
     }),
     CacheModule.register({
@@ -70,7 +71,8 @@ import { CacheModule } from '@nestjs/cache-manager';
     CompetitiveExamModule,
     UserPermissionsModule,
     PermissionsModule,
-    MenusModule
+    MenusModule,
+    NewsModule
   ],
   controllers: [AppController, NodeMailerController,],
   providers: [AppService, NodeMailerService,],

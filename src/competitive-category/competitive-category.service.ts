@@ -55,5 +55,5 @@ export class CompetitiveCategoryService {
       }
       const obj = Object.assign(competitiveCatagory, { status: DefaultStatus.DELETED });
       return this.repo.save(obj);
-    }
+  }
 }

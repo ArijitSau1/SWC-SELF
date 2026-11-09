@@ -35,6 +35,9 @@ export class MockTestService {
         'Mock test with this title already exists for this subject',
       );
     }
+
+    const obj = Object.create({...dto,subject:subject});
+    return this.repo.save(obj);
 }
 
 

@@ -19,21 +19,10 @@ export class CreateAudioLactureDto {
   title: string;
 
 
-  @IsString()
-  @IsNotEmpty()
-  @MaxLength(255)
-  audio_url: string;
-
-  
   @IsNumber()
   @Min(0)
   duration: number;
 
-  @IsOptional()
-  @IsNumber()
-  @Min(0)
-  @Max(5)
-  rating: number;
 
 
   @IsEnum(PaidOrFree)

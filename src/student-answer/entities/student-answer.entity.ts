@@ -1,4 +1,3 @@
-
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -9,6 +8,7 @@ import {
 } from 'typeorm';
 import { TestAttempt } from 'src/test-attempt/entities/test-attempt.entity';
 import { Question } from 'src/question/entities/question.entity';
+import { DefaultStatus } from 'src/enum';
 
 @Entity('student_answer')
 export class StudentAnswer {
@@ -20,6 +20,7 @@ export class StudentAnswer {
 
   @Column({ type: 'boolean', default: false })
   is_correct: boolean;
+
 
   @CreateDateColumn()
   createdAt: Date;

@@ -14,11 +14,11 @@ export class DegreeService {
   ) {}
 
    async create(dto: CreateDegreeDto) {
-      const board = await this.repo.findOne({
+      const degree = await this.repo.findOne({
         where: { name: dto.name },
       });
   
-      if (board) {
+      if (degree) {
         throw new ConflictException('Degree already exists');
       }
   

@@ -1,12 +1,14 @@
 import {
   IsEnum,
   IsNotEmpty,
+  IsOptional,
   IsString,
   IsUUID,
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { DefaultStatus } from '../../enum';
+import { DefaultStatus } from 'src/enum';
+
 
 export class CreateSemesterDto {
   @IsString()
@@ -15,10 +17,12 @@ export class CreateSemesterDto {
   @MaxLength(100)
   name: string;
 
+  @IsOptional()
   @IsUUID()
   streamId: string;
 
-  @IsNotEmpty()
-  @IsEnum(DefaultStatus)
-  status: DefaultStatus;
+  @IsOptional()
+  @IsUUID()
+  degreeUniversityId: string;
+
 }

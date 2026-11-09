@@ -4,10 +4,11 @@ import { SemesterController } from './semester.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Semester } from './entities/semester.entity';
 import { Stream } from 'src/stream/entities/stream.entity';
+import { DegreeUniversity } from 'src/degree-university/entities/degree-university.entity';
 
 @Module({
   imports:[
-    TypeOrmModule.forFeature([Semester,Stream])
+    TypeOrmModule.forFeature([Semester,Stream,DegreeUniversity])
   ],
   controllers: [SemesterController],
   providers: [SemesterService],

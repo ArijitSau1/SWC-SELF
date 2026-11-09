@@ -1,4 +1,8 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SchoolClass } from './entities/school-class.entity';
 import { Brackets, Repository } from 'typeorm';
@@ -28,7 +32,7 @@ export class SchoolClassService {
       where: {
         name: dto.name,
         tier: dto.tier,
-        board: {id:dto.boardId},
+        board: { id: dto.boardId },
       },
     });
 
@@ -38,43 +42,43 @@ export class SchoolClassService {
       );
     }
 
-     const obj = Object.assign(dto);
+
+    const obj = Object.create({...dto,board:board})
     return this.repo.save(obj);
   }
 
-    async findAll(dto: DefaultStatusPaginationDto) {
-      const keyword = dto.keyword || '';
-      const [result, count] = await this.repo
-        .createQueryBuilder('schoolClass')
-        .where('schoolClass.status = :status', { status: dto.status })
-        .andWhere(
-          new Brackets((qb) => {
-            qb.where(
-              'schoolClass.name LIKE :name or schoolClass.tier LIKE :tier ',
-              {
-                name: '%' + keyword + '%',
-                tier: '%' + keyword + '%'
-              },
-            );
-          }),
-        )
-        .take(dto.limit)
-        .skip(dto.offset)
-        .getManyAndCount();
-      return { result, count };
-    }
-  
-    async findOne(id: string) {
+  async findAll(dto: DefaultStatusPaginationDto) {
+    const keyword = dto.keyword || '';
+    const [result, count] = await this.repo
+      .createQueryBuilder('schoolClass')
+      .where('schoolClass.status = :status', { status: dto.status })
+      .andWhere(
+        new Brackets((qb) => {
+          qb.where(
+            'schoolClass.name LIKE :name or schoolClass.tier LIKE :tier ',
+            {
+              name: '%' + keyword + '%',
+              tier: '%' + keyword + '%',
+            },
+          );
+        }),
+      )
+      .take(dto.limit)
+      .skip(dto.offset)
+      .getManyAndCount();
+    return { result, count };
+  }
+
+  async findOne(id: string) {
     return this.repo.findOne({ where: { id } });
   }
 
-    async remove(id: string) {
-      const schoolClass = await this.repo.findOne({ where: { id } });
-      if (!schoolClass) {
-        throw new NotFoundException('class not found');
-      }
-      const obj = Object.assign(schoolClass, { status: DefaultStatus.DELETED });
-      return this.repo.save(obj);
+  async remove(id: string) {
+    const schoolClass = await this.repo.findOne({ where: { id } });
+    if (!schoolClass) {
+      throw new NotFoundException('class not found');
     }
-
+    const obj = Object.assign(schoolClass, { status: DefaultStatus.DELETED });
+    return this.repo.save(obj);
+  }
 }

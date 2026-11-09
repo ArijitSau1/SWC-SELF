@@ -42,12 +42,15 @@ export class AudioLectureService {
         'Audio Lacture  already exists for this subject',
       );
     }
+
+    const obj = Object.assign({...dto,subject:subject});
+    return this.repo.save(obj);
   }
 
   async audio(image: string, result: AudioLecture) {
     const obj = Object.assign(result, {
-      pdf_file_url: process.env.RE_CDN_LINK + image,
-      pdf_file_path: image,
+      audio_file_url: process.env.RE_CDN_LINK + image,
+      audio_file_path: image,
     });
 
     return this.repo.save(obj);
@@ -88,11 +91,11 @@ export class AudioLectureService {
   }
 
   async remove(id: string) {
-    const mockTest = await this.repo.findOne({ where: { id } });
-    if (!mockTest) {
-      throw new NotFoundException('Mock test not found');
+    const audio = await this.repo.findOne({ where: { id } });
+    if (!audio) {
+      throw new NotFoundException('audio not found');
     }
-    const obj = Object.assign(mockTest, { status: DefaultStatus.DELETED });
+    const obj = Object.assign(audio, { status: DefaultStatus.DELETED });
     return this.repo.save(obj);
   }
 }

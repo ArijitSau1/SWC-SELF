@@ -1,10 +1,10 @@
-import { NotAcceptableException } from '@nestjs/common';
+import { NotAcceptableException, } from '@nestjs/common';
 import axios from 'axios';
 
 export const imageFileFilter = (req, file, callback) => {
-  if (!file.originalname.match(/\.(jpg|jpeg|png|mp4)$/)) {
+  if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
     return callback(
-      new NotAcceptableException('Only Jpg, jpeg, png, mp4 files are allowed!'),
+      new NotAcceptableException('Only Jpg, jpeg, png files are allowed!'),
       false,
     );
   }
@@ -12,9 +12,29 @@ export const imageFileFilter = (req, file, callback) => {
 };
 
 export const audioFileFilter = (req, file, callback) => {
-  if (!file.originalname.match(/\.(mp3|mp4)$/)) {
+  if (!file.originalname.match(/\.(mp3)$/)) {
     return callback(
       new NotAcceptableException('Only mp3 file are allowed!'),
+      false,
+    );
+  }
+  callback(null, true);
+};
+
+export const videoFileFilter = (req, file, callback) => {
+  if (!file.originalname.match(/\.(mp4)$/)) {
+    return callback(
+      new NotAcceptableException('Only mp4 file are allowed!'),
+      false,
+    );
+  }
+  callback(null, true);
+};
+
+export const pdfFileFilter = (req, file, callback) => {
+  if (!file.originalname.match(/\.(pdf)$/)) {
+    return callback(
+      new NotAcceptableException('Only pdf file are allowed!'),
       false,
     );
   }

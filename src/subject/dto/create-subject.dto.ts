@@ -16,9 +16,14 @@ export class CreateSubjectDto {
 
   @IsOptional()
   @IsUUID()
-  schoolClassId?: string;
+  schoolClassId: string;
 
   @IsOptional()
   @IsUUID()
-  semesterId?: string;
+  semesterId: string;
+
+  @IsOptional()
+  @IsUUID()
+  competitiveExamId: string;
+
 }

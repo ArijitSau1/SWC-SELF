@@ -24,6 +24,7 @@ import { UserRole } from 'src/enum';
 import { DefaultStatusPaginationDto } from 'src/common/dto/default-status-pagination.dto';
 import { AudioLectureService } from './audio-lecture.service';
 import { CreateAudioLactureDto } from './dto/create-audio-lecture.dto';
+import { audioFileFilter } from 'src/utils/fileUpload.utils';
 
 @Controller('audio-lecture')
 export class AudioLectureController {
@@ -35,7 +36,7 @@ export class AudioLectureController {
   }
 
   @Put('audio/:id')
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
@@ -49,16 +50,14 @@ export class AudioLectureController {
           return callback(null, `${randomName}${extname(file.originalname)}`);
         },
       }),
+      fileFilter: audioFileFilter,
     }),
   )
   async audio(
     @Param('id') id: string,
     @UploadedFile(
       new ParseFilePipe({
-        validators: [
-          new FileTypeValidator({ fileType: '.mp3' }),
-          new MaxFileSizeValidator({ maxSize: 1024 * 1024 }),
-        ],
+        validators: [new MaxFileSizeValidator({ maxSize: 1024 * 1024 })],
       }),
     )
     file: Express.Multer.File,

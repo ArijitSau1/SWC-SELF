@@ -20,11 +20,6 @@ export class MockTest {
   @Column({ type: 'varchar', length: 200, nullable: true })
   title: string;
 
-  @Column({ type: 'varchar', length: 100, nullable: true })
-  class_name: string;
-
-  @Column({ type: 'varchar', length: 100, nullable: true })
-  semester_name: string;
 
   @Column({ type: 'int', default: 0 })
   total_questions: number;

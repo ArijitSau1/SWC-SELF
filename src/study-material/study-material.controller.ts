@@ -24,6 +24,7 @@ import { UserRole } from 'src/enum';
 import { StudyMaterialService } from './study-material.service';
 import { DefaultStatusPaginationDto } from 'src/common/dto/default-status-pagination.dto';
 import { CreateStudyMaterialDto } from './dto/create-study-material.dto';
+import { pdfFileFilter } from 'src/utils/fileUpload.utils';
 
 @Controller('study-material')
 export class StudyMaterialController {
@@ -34,10 +35,9 @@ export class StudyMaterialController {
     return this.studyMaterialService.create(dto);
   }
 
-
-  @Put('pdf/:id')
-  @UseGuards(AuthGuard('jwt'))
-  @Roles(UserRole.ADMIN)
+  @Put(':id')
+  // @UseGuards(AuthGuard('jwt'))
+  // @Roles(UserRole.ADMIN)
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
@@ -51,16 +51,14 @@ export class StudyMaterialController {
           return callback(null, `${randomName}${extname(file.originalname)}`);
         },
       }),
+      fileFilter: pdfFileFilter,
     }),
   )
   async pdf(
     @Param('id') id: string,
     @UploadedFile(
       new ParseFilePipe({
-        validators: [
-          new FileTypeValidator({ fileType: '.pdf' }),
-          new MaxFileSizeValidator({ maxSize: 1024 * 1024 }),
-        ],
+        validators: [new MaxFileSizeValidator({ maxSize: 1024 * 1024 })],
       }),
     )
     file: Express.Multer.File,

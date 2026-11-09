@@ -13,13 +13,11 @@ export class CreateStreamDto {
   @IsOptional()
   @IsString()
   @MaxLength(100)
-  name?: string;
+  name: string;
 
   @IsUUID()
   @IsNotEmpty()
   schoolClassId: string;
 
-  @IsOptional()
-  @IsEnum(DefaultStatus)
-  status: DefaultStatus;
+
 }

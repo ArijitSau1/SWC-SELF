@@ -10,6 +10,7 @@ import {
 import { Account } from 'src/account/entities/account.entity';
 import { MockTest } from 'src/mock-test/entities/mock-test.entity';
 import { StudentAnswer } from 'src/student-answer/entities/student-answer.entity';
+import { DefaultStatus } from 'src/enum';
 
 @Entity('test_attempt')
 export class TestAttempt {
@@ -28,8 +29,8 @@ export class TestAttempt {
   @Column({ type: 'decimal', precision: 5, scale: 2, default: 0 })
   percentage: number;
 
-  @Column({ type: 'datetime', nullable: true })
-  submitted_at: Date;
+  @Column({ type: 'enum', enum: DefaultStatus, default: DefaultStatus.ACTIVE })
+  status: DefaultStatus;
 
   @CreateDateColumn()
   createdAt: Date;

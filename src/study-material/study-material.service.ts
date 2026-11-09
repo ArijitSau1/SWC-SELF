@@ -42,6 +42,9 @@ export class StudyMaterialService {
         'Study material  already exists for this subject',
       );
     }
+
+    const obj = Object.create({...dto,subject:subject});
+    return this.repo.save(obj);
   }
 
   async pdf(image: string, result: StudyMaterial) {

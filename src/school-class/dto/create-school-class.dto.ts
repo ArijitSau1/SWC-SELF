@@ -22,7 +22,4 @@ export class CreateSchoolClassDto {
   @IsUUID()
   boardId: string;
 
-  @IsOptional()
-  @IsEnum(DefaultStatus)
-  status: DefaultStatus;
 }

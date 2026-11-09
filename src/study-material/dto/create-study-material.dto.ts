@@ -20,13 +20,11 @@ export class CreateStudyMaterialDto {
   @MaxLength(200)
   title: string;
 
-
   @IsOptional()
   @IsNumber()
   @Min(0)
   @Max(5)
   rating: number;
-
 
   @IsOptional()
   @IsInt()
@@ -40,6 +38,7 @@ export class CreateStudyMaterialDto {
   @IsNumber()
   @Min(0)
   price: number;
+
 
   @IsUUID()
   @IsNotEmpty()

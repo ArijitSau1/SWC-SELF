@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Delete,
   FileTypeValidator,
@@ -21,10 +22,16 @@ import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { UserRole } from 'src/enum';
 import { DefaultStatusPaginationDto } from 'src/common/dto/default-status-pagination.dto';
 import { MockTestService } from './mock-test.service';
+import { CreateMockTestDto } from './dto/create-mock-test.dto';
 
 @Controller('mock-test')
 export class MockTestController {
   constructor(private readonly mockTestService: MockTestService) {}
+
+    @Post()
+    async create(@Body() dto: CreateMockTestDto) {
+      return this.mockTestService.create(dto);
+    }
 
     @Get()
     @UseGuards(AuthGuard('jwt'), RolesGuard)

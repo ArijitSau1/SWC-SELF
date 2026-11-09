@@ -21,12 +21,6 @@ export class CreateVideoLactureDto {
   @MaxLength(200)
   title: string;
 
-
-  @IsString()
-  @IsNotEmpty()
-  @MaxLength(255)
-  video_url: string;
-
   
   @IsNumber()
   @Min(0)

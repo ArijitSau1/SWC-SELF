@@ -54,6 +54,13 @@ export class DegreeUniversityService {
         'This degree is already associated with this university',
       );
     }
+
+    const obj = Object.assign(new DegreeUniversity(), {
+      degree: degree,
+      university: university,
+    });
+
+    return this.repo.save(obj);
   }
 
   async findAll(dto: DefaultStatusPaginationDto) {

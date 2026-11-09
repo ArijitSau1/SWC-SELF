@@ -27,7 +27,7 @@ export class VideoLectureService {
     });
 
     if (!subject) {
-      throw new NotFoundException('Video not found');
+      throw new NotFoundException('Subject not found');
     }
 
     const existing = await this.repo.findOne({
@@ -42,6 +42,9 @@ export class VideoLectureService {
         'Video Lacture  already exists for this subject',
       );
     }
+
+    const obj = Object.create({...dto,subject:subject})
+    return this.repo.save(obj);
   }
 
   async video(image: string, result: VideoLecture) {

@@ -1,8 +1,10 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
   Param,
+  Post,
   Query,
   UseGuards,
 } from '@nestjs/common';
@@ -12,10 +14,17 @@ import { UserRole } from 'src/enum';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { DefaultStatusPaginationDto } from 'src/common/dto/default-status-pagination.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { CreateStreamDto } from './dto/create-stream.dto';
 
 @Controller('stream')
 export class StreamController {
   constructor(private readonly streamService: StreamService) {}
+
+  @Post()
+  create(@Body() dto: CreateStreamDto) {
+    return this.streamService.create(dto);
+  }
+
   @Get()
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles(UserRole.USER)

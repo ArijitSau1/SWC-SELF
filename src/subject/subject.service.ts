@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Subject } from './entities/subject.entity';
 import { Brackets, Repository } from 'typeorm';
@@ -6,6 +10,8 @@ import { SchoolClass } from 'src/school-class/entities/school-class.entity';
 import { Semester } from 'src/semester/entities/semester.entity';
 import { DefaultStatusPaginationDto } from 'src/common/dto/default-status-pagination.dto';
 import { DefaultStatus } from 'src/enum';
+import { CreateSubjectDto } from './dto/create-subject.dto';
+import { CompetitiveExam } from 'src/competitive-exam/entities/competitive-exam.entity';
 
 @Injectable()
 export class SubjectService {
@@ -18,7 +24,55 @@ export class SubjectService {
 
     @InjectRepository(Semester)
     private readonly semesterRepo: Repository<Semester>,
+
+    @InjectRepository(CompetitiveExam)
+    private readonly examRepo: Repository<CompetitiveExam>,
   ) {}
+
+  async create(dto: CreateSubjectDto) {
+    let schoolClass: SchoolClass | null = null;
+    let semester: Semester | null = null;
+    let competitiveExam: CompetitiveExam | null = null;
+
+    if (dto.schoolClassId) {
+      schoolClass = await this.schoolClassRepo.findOne({
+        where: { id: dto.schoolClassId },
+      });
+
+      if (!schoolClass) {
+        throw new NotFoundException('School class not found');
+      }
+    }
+
+    if (dto.semesterId) {
+      semester = await this.semesterRepo.findOne({
+        where: { id: dto.semesterId },
+      });
+
+      if (!semester) {
+        throw new NotFoundException('Semester not found');
+      }
+    }
+
+    if (dto.competitiveExamId) {
+      competitiveExam = await this.examRepo.findOne({
+        where: { id: dto.competitiveExamId },
+      });
+
+      if (!competitiveExam) {
+        throw new NotFoundException('Competitive exam not found');
+      }
+    }
+
+    const subject = Object.create({
+      ...dto,
+      schoolClass: schoolClass,
+      semester: semester,
+      competitiveExam: competitiveExam,
+    });
+
+    return this.repo.save(subject);
+  }
 
   async findAll(dto: DefaultStatusPaginationDto) {
     const keyword = dto.keyword || '';

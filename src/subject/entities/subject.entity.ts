@@ -63,6 +63,7 @@ export class Subject {
 
   @ManyToOne(() => CompetitiveExam,(competitiveExam) => competitiveExam.subjects,
   {
+    nullable:true,
     cascade: true,
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',

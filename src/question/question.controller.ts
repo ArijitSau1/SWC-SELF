@@ -21,7 +21,7 @@ import { DefaultStatusPaginationDto } from 'src/common/dto/default-status-pagina
 export class QuestionController {
   constructor(private readonly questionService: QuestionService) {}
 
-  @Post('create')
+  @Post()
   async create(@Body() dto: CreateQuestionDto) {
     return this.questionService.create(dto);
   }
@@ -36,6 +36,11 @@ export class QuestionController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.questionService.findOne(id);
+  }
+
+  @Get('mock-test/:mockTestId')
+  findByMockTest(@Param('mockTestId') mockTestId: string) {
+    return this.questionService.findByMockTest(mockTestId);
   }
 
   @Delete(':id')

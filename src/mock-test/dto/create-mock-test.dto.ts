@@ -1,4 +1,3 @@
-
 import {
   IsNotEmpty,
   IsString,
@@ -18,17 +17,6 @@ export class CreateMockTestDto {
   @MaxLength(200)
   title: string;
 
-  @IsOptional()
-  @IsString()
-  @MinLength(0)
-  @MaxLength(100)
-  class_name: string;
-
-  @IsOptional()
-  @IsString()
-  @MinLength(0)
-  @MaxLength(100)
-  semester_name: string;
 
   @IsOptional()
   @IsInt()

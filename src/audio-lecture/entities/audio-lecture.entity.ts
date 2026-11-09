@@ -20,7 +20,11 @@ export class AudioLecture {
 
 
   @Column({ type: 'varchar', length: 255, nullable:true })
-  audio_url: string;
+  audio_file_url: string;
+
+  
+  @Column({ type: 'varchar', length: 255, nullable:true })
+  audio_file_path: string;
 
   @Column({ type: 'int', default: 0 })
   duration: number;

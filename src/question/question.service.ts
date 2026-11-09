@@ -9,7 +9,7 @@ import { DefaultStatus } from 'src/enum';
 
 @Injectable()
 export class QuestionService {
-    constructor(
+  constructor(
     @InjectRepository(Question)
     private readonly repo: Repository<Question>,
 
@@ -17,8 +17,7 @@ export class QuestionService {
     private readonly mockTestRepo: Repository<MockTest>,
   ) {}
 
-
-    async create(dto: CreateQuestionDto) {
+  async create(dto: CreateQuestionDto) {
     const mockTest = await this.mockTestRepo.findOne({
       where: { id: dto.mockTestId },
     });
@@ -26,9 +25,31 @@ export class QuestionService {
     if (!mockTest) {
       throw new NotFoundException('Mock test not found');
     }
-}
 
- async findAll(dto: DefaultStatusPaginationDto) {
+    const obj = Object.assign({
+      ...dto,
+      mockTest: mockTest,
+    });
+
+    const saved = await this.repo.save(obj);
+
+    return this.repo
+      .createQueryBuilder('question')
+      .leftJoin('question.mockTest', 'mockTest')
+      .select([
+        'question.id',
+        'question.question',
+        'question.options',
+        'question.correct_option',
+        'question.explanation',
+        'question.status',
+        'question.createdAt',
+      ])
+      .where('question.id = :id', { id: saved.id })
+      .getOne();
+  }
+
+  async findAll(dto: DefaultStatusPaginationDto) {
     const keyword = dto.keyword || '';
     const [result, count] = await this.repo
       .createQueryBuilder('question')
@@ -51,16 +72,27 @@ export class QuestionService {
     return { result, count };
   }
 
-    async findOne(id: string) {
-      return this.repo.findOne({ where: { id } });
+  async findOne(id: string) {
+    return this.repo.findOne({ where: { id } });
+  }
+
+  async findByMockTest(mockTestId: string) {
+    const result = await this.repo
+      .createQueryBuilder('question')
+      .where('question.mockTestId = :mockTestId', { mockTestId })
+      .andWhere('question.status = :status', { status: DefaultStatus.ACTIVE })
+      .select(['question.id', 'question.question', 'question.options'])
+      .getMany();
+
+    return result;
+  }
+
+  async remove(id: string) {
+    const question = await this.repo.findOne({ where: { id } });
+    if (!question) {
+      throw new NotFoundException('Question not found');
     }
-  
-    async remove(id: string) {
-      const question = await this.repo.findOne({ where: { id } });
-      if (!question) {
-        throw new NotFoundException('Question not found');
-      }
-      const obj = Object.assign(Question, { status: DefaultStatus.DELETED });
-      return this.repo.save(obj);
-    }
+    const obj = Object.assign(Question, { status: DefaultStatus.DELETED });
+    return this.repo.save(obj);
+  }
 }

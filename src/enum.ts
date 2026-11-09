@@ -9,6 +9,7 @@ export enum DefaultStatus {
   DELETED = 'DELETED',
   SUSPENDED = 'SUSPENDED',
   PENDING = 'PENDING',
+  SUBMITTED='SUBMITTED'
 }
 
 export enum ClassTierEnum {

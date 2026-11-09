@@ -13,7 +13,7 @@ export class DegreeUniversityController {
   constructor(private readonly degreeUniversityService: DegreeUniversityService) {}
 
 
-@Post('create')
+  @Post()
   async create(@Body() dto: CreateDegreeUniversityDto) {
     return this.degreeUniversityService.create(dto);
   }

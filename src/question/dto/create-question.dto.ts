@@ -16,9 +16,6 @@ export class CreateQuestionDto {
   question: string;
 
   @IsArray()
-  @MinLength(2)
-  @MaxLength(5)
-  @IsString()
   options: string[];
 
   @IsString()

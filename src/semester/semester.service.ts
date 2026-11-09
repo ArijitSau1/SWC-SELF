@@ -6,6 +6,8 @@ import { Brackets, Repository } from 'typeorm';
 import { DefaultStatusPaginationDto } from 'src/common/dto/default-status-pagination.dto';
 import { DefaultStatus } from 'src/enum';
 import { Stream } from 'src/stream/entities/stream.entity';
+import { DegreeUniversity } from 'src/degree-university/entities/degree-university.entity';
+import { CreateSemesterDto } from './dto/create-semester.dto';
 
 @Injectable()
 export class SemesterService {
@@ -15,7 +17,38 @@ export class SemesterService {
 
     @InjectRepository(Stream)
     private readonly streamRepo: Repository<Stream>,
+
+    @InjectRepository(DegreeUniversity)
+    private readonly degreeUniversityRepo: Repository<DegreeUniversity>,
   ) {}
+
+  async create(dto: CreateSemesterDto) {
+  let stream: Stream | null = null;
+  let degreeUniversity: DegreeUniversity | null = null;
+
+  if (dto.streamId) {
+    stream = await this.streamRepo.findOne({
+      where: { id: dto.streamId },
+    });
+
+    if (!stream) {
+      throw new NotFoundException('Stream not found');
+    }
+  }
+
+  if (dto.degreeUniversityId) {
+    degreeUniversity = await this.degreeUniversityRepo.findOne({
+      where: { id: dto.degreeUniversityId },
+    });
+
+    if (!degreeUniversity) {
+      throw new NotFoundException('Degree University not found');
+    }
+  }
+
+  const obj = Object.assign({...dto,stream:stream,degreeUniversity:degreeUniversity})
+  return this.repo.save(obj);
+}
 
   async findAll(dto: DefaultStatusPaginationDto) {
     const keyword = dto.keyword || '';
