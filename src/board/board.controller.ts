@@ -4,8 +4,10 @@ import { CreateBoardDto } from './dto/create-board.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
-import { UserRole } from 'src/enum';
+import { PermissionAction, UserRole } from 'src/enum';
 import { DefaultStatusPaginationDto } from 'src/common/dto/default-status-pagination.dto';
+import { PermissionsGuard } from 'src/auth/guards/permissions.guard';
+import { CheckPermissions } from 'src/auth/decorators/permissions.decorator';
 
 @Controller('board')
 export class BoardController {
@@ -17,8 +19,9 @@ export class BoardController {
       }
     
       @Get()
-      @UseGuards(AuthGuard('jwt'),RolesGuard)
-      @Roles(UserRole.USER)
+      @UseGuards(AuthGuard('jwt'),RolesGuard,PermissionsGuard)
+      @Roles(UserRole.ADMIN)
+      @CheckPermissions([PermissionAction.READ,'board'])
       find(@Query() query: DefaultStatusPaginationDto) {
         return this.boardService.findAll(query);
       }

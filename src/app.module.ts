@@ -43,7 +43,7 @@ import { NewsModule } from './news/news.module';
       username: process.env.RE_USER_NAME,
       password: process.env.RE_DB_PASS,
       database: process.env.RE_DB_NAME,
-      synchronize: true,
+      synchronize: false,
       autoLoadEntities: true,
     }),
     CacheModule.register({
