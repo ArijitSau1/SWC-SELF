@@ -21,13 +21,4 @@ export class MenusService {
     return menus;
   }
 
-  async refreshMenus() {
-  await this.cacheManager.del('menus');
-
-  const menus = await this.repo.find();
-
-  await this.cacheManager.set('menus', menus, 0);
-
-  return menus;
-  }
 }
