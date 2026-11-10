@@ -10,6 +10,7 @@ import { CreateAudioLactureDto } from './dto/create-audio-lecture.dto';
 import { DefaultStatusPaginationDto } from 'src/common/dto/default-status-pagination.dto';
 import { DefaultStatus } from 'src/enum';
 import { InjectRepository } from '@nestjs/typeorm';
+import { uploadFileHandler } from 'src/utils/fileUpload.utils';
 
 @Injectable()
 export class AudioLectureService {
@@ -55,6 +56,22 @@ export class AudioLectureService {
 
     return this.repo.save(obj);
   }
+
+
+//   async audio(file: Express.Multer.File, result: AudioLecture) {
+//   const buffer = fs.readFileSync(file.path);
+
+//   const image = `AudioLecture/${file.filename}`;
+
+//   await uploadFileHandler(image, buffer);
+
+//   const obj = Object.assign(result, {
+//     audio_file_url: process.env.RE_CDN_LINK + image,
+//     audio_file_path: image,
+//   });
+
+//   return this.repo.save(obj);
+// }
 
   async findAll(dto: DefaultStatusPaginationDto) {
     const keyword = dto.keyword || '';

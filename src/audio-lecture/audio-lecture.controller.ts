@@ -68,7 +68,7 @@ export class AudioLectureController {
 
   @Get()
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Roles(UserRole.USER)
+  @Roles(UserRole.ADMIN)
   find(@Query() query: DefaultStatusPaginationDto) {
     return this.audioLactureService.findAll(query);
   }
