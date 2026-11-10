@@ -21,13 +21,4 @@ export class PermissionsService {
     return perms;
   }
 
-  async refreshPermissions() {
-  await this.cacheManager.del('perms');
-
-  const perms = await this.repo.find();
-
-  await this.cacheManager.set('perms', perms, 0);
-
-  return perms;
-  }
 }
