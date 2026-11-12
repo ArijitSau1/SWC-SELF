@@ -11,6 +11,7 @@ import { DefaultStatusPaginationDto } from 'src/common/dto/default-status-pagina
 import { DefaultStatus } from 'src/enum';
 import { InjectRepository } from '@nestjs/typeorm';
 import { uploadFileHandler } from 'src/utils/fileUpload.utils';
+import * as fs from 'fs';
 
 @Injectable()
 export class AudioLectureService {
@@ -48,30 +49,30 @@ export class AudioLectureService {
     return this.repo.save(obj);
   }
 
-  async audio(image: string, result: AudioLecture) {
-    const obj = Object.assign(result, {
-      audio_file_url: process.env.RE_CDN_LINK + image,
-      audio_file_path: image,
-    });
+  // async audio(image: string, result: AudioLecture) {
+  //   const obj = Object.assign(result, {
+  //     audio_file_url: process.env.RE_CDN_LINK + image,
+  //     audio_file_path: image,
+  //   });
 
-    return this.repo.save(obj);
-  }
+  //   return this.repo.save(obj);
+  // }
 
 
-//   async audio(file: Express.Multer.File, result: AudioLecture) {
-//   const buffer = fs.readFileSync(file.path);
+  async audio(file: Express.Multer.File, result: AudioLecture) {
+  const buffer = fs.readFileSync(file.path);
 
-//   const image = `AudioLecture/${file.filename}`;
+  const image = `AudioLecture/${file.filename}`;
 
-//   await uploadFileHandler(image, buffer);
+  await uploadFileHandler(image, buffer);
 
-//   const obj = Object.assign(result, {
-//     audio_file_url: process.env.RE_CDN_LINK + image,
-//     audio_file_path: image,
-//   });
+  const obj = Object.assign(result, {
+    audio_file_url: process.env.RE_CDN_LINK + image,
+    audio_file_path: image,
+  });
 
-//   return this.repo.save(obj);
-// }
+  return this.repo.save(obj);
+}
 
   async findAll(dto: DefaultStatusPaginationDto) {
     const keyword = dto.keyword || '';

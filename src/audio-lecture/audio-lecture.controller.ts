@@ -63,7 +63,7 @@ export class AudioLectureController {
     file: Express.Multer.File,
   ) {
     const fileData = await this.audioLactureService.findOne(id);
-    return this.audioLactureService.audio(file.path, fileData);
+    return this.audioLactureService.audio(file, fileData);
   }
 
   @Get()

@@ -6,9 +6,15 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Account } from './entities/account.entity';
 import { Brackets, Repository } from 'typeorm';
-import { CreateAccountDto, PaginationDto } from './dto/account.dto';
+import {
+  CreateAccountDto,
+  PaginationDto,
+  UpdateProfileDto,
+} from './dto/account.dto';
 import * as bcrypt from 'bcrypt';
 import { DefaultStatus } from 'src/enum';
+import { uploadFileHandler } from 'src/utils/fileUpload.utils';
+import * as fs from 'fs';
 
 @Injectable()
 export class AccountService {
@@ -41,22 +47,16 @@ export class AccountService {
     const keyword = dto.keyword || '';
     const [result, total] = await this.repo
       .createQueryBuilder('account')
-      .where(
-        'account.status = :status AND account.roles = :roles',
-        {
-          status: dto.status,
-          roles: dto.role,
-        },
-      )
-        .andWhere(
+      .where('account.status = :status AND account.roles = :roles', {
+        status: dto.status,
+        roles: dto.role,
+      })
+      .andWhere(
         new Brackets((qb) => {
-          qb.where(
-            'account.email LIKE :email OR account.name LIKE :name',
-            {
-              email: '%' + keyword + '%',
-        name: '%' + keyword + '%',
-            },
-          );
+          qb.where('account.email LIKE :email OR account.name LIKE :name', {
+            email: '%' + keyword + '%',
+            name: '%' + keyword + '%',
+          });
         }),
       )
       .skip(dto.offset)
@@ -65,21 +65,56 @@ export class AccountService {
     return { result, total };
   }
 
-  async findOne(id: string) {
+  async userProfile(id: string) {
     const user = await this.repo
       .createQueryBuilder('account')
       .select([
         'account.id',
         'account.name',
         'account.email',
+        'account.phone',
+        'account.age',
+        'account.gender',
+        'account.institution',
+        'account.address',
+        'account.profileImageUrl',
         'account.createdAt',
       ])
-      .where('account.id=:id', {id}).getOne();
+      .where('account.id = :id', { id: id })
+      .getOne();
+
     if (!user) {
       throw new NotFoundException('User not found');
     }
 
     return user;
+  }
+
+  async updateProfile(id: string, dto: UpdateProfileDto) {
+    const user = await this.repo.findOne({
+      where: { id: id },
+    });
+    if (!user) {
+      throw new NotFoundException('User not found!');
+    }
+    const obj = Object.assign(user, dto);
+
+    return this.repo.save(obj);
+  }
+
+  async profileImage(file: Express.Multer.File, result: Account) {
+    const buffer = fs.readFileSync(file.path);
+
+    const image = `Profile/${file.filename}`;
+
+    await uploadFileHandler(image, buffer);
+
+    const obj = Object.assign(result, {
+      profileImageUrl: process.env.RE_CDN_LINK + image,
+      profileImagePath: image,
+    });
+
+    return this.repo.save(obj);
   }
 
   async remove(id: string) {

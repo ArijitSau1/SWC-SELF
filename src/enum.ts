@@ -28,3 +28,10 @@ export enum PermissionAction {
   UPDATE = 'Update',
   DELETE = 'Delete',
 }
+
+
+export enum Gender {
+  MALE = 'Male',
+  FEMALE = 'Female',
+  OTHER = 'Other',
+}

@@ -1,6 +1,17 @@
 import { Type } from 'class-transformer';
-import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, Max, MaxLength, Min, MinLength } from 'class-validator';
-import { DefaultStatus, UserRole } from 'src/enum';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Length,
+  Max,
+  MaxLength,
+  Min,
+  MinLength,
+} from 'class-validator';
+import { DefaultStatus, Gender, UserRole } from 'src/enum';
 
 export class CreateAccountDto {
   @IsNotEmpty()
@@ -55,5 +66,28 @@ export class PaginationDto {
   @IsNotEmpty()
   @IsEnum(UserRole)
   role: UserRole;
+}
 
+export class UpdateProfileDto {
+  @IsOptional()
+  @IsString()
+  @MaxLength(10)
+  @MinLength(10)
+  phone: string;
+
+  @IsOptional()
+  @IsNumber()
+  age: number;
+
+  @IsOptional()
+  @IsEnum(Gender)
+  gender: Gender;
+
+  @IsOptional()
+  @IsString()
+  institution: string;
+
+  @IsOptional()
+  @IsString()
+  address: string;
 }
