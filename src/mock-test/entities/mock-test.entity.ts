@@ -11,6 +11,7 @@ import { DefaultStatus, PaidOrFree } from 'src/enum';
 import { Subject } from 'src/subject/entities/subject.entity';
 import { Question } from 'src/question/entities/question.entity';
 import { TestAttempt } from 'src/test-attempt/entities/test-attempt.entity';
+import { Course } from 'src/course/entities/course.entity';
 
 @Entity('mock_test')
 export class MockTest {
@@ -57,4 +58,12 @@ export class MockTest {
 
   @OneToMany(() => TestAttempt, (testAttempt) => testAttempt.mockTest)
   testAttempts: TestAttempt[];
+
+  @ManyToOne(() => Course, (course) => course.mockTests, {
+  nullable: true,
+  cascade:true,
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE',
+})
+course: Course;
 }

@@ -9,6 +9,7 @@ import {
 
 import { DefaultStatus, PaidOrFree } from 'src/enum';
 import { Subject } from 'src/subject/entities/subject.entity';
+import { Course } from 'src/course/entities/course.entity';
 
 @Entity('study_material')
 export class StudyMaterial {
@@ -51,4 +52,12 @@ export class StudyMaterial {
     onUpdate: 'CASCADE',
   })
   subject: Subject;
+
+  @ManyToOne(() => Course, (course) => course.studyMaterials, {
+  nullable: true,
+  cascade: true,
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE',
+})
+course: Course;
 }

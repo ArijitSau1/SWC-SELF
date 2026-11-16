@@ -1,3 +1,4 @@
+import { CourseEnrollment } from 'src/course-enrollment/entities/course-enrollment.entity';
 import { DefaultStatus, Gender, UserRole } from 'src/enum';
 import { TestAttempt } from 'src/test-attempt/entities/test-attempt.entity';
 import { UserPermission } from 'src/user-permissions/entities/user-permission.entity';
@@ -62,4 +63,10 @@ export class Account {
 
   @OneToMany(() => UserPermission, (userPermission) => userPermission.account)
   userPermission: UserPermission[];
+
+  @OneToMany(
+    () => CourseEnrollment,
+    (courseEnrollment) => courseEnrollment.account,
+  )
+  courseEnrollments: CourseEnrollment[];
 }

@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { DefaultStatus, PaidOrFree } from 'src/enum';
 import { Subject } from 'src/subject/entities/subject.entity';
+import { Course } from 'src/course/entities/course.entity';
 
 @Entity('audio_lecture')
 export class AudioLecture {
@@ -50,4 +51,11 @@ export class AudioLecture {
     onUpdate: 'CASCADE',
   })
   subject: Subject;
+
+  @ManyToOne(() => Course, (course) => course.audioLectures, {
+  cascade:true,
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE',
+})
+course: Course;
 }

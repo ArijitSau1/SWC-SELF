@@ -4,7 +4,11 @@ import { CreateNewsDto } from './dto/create-news.dto';
 import { DefaultStatusPaginationDto } from 'src/common/dto/default-status-pagination.dto';
 import { DefaultStatus } from 'src/enum';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 
 @Injectable()
 export class NewsService {
@@ -37,46 +41,45 @@ export class NewsService {
     return this.repo.save(obj);
   }
 
-
   async findAll(dto: DefaultStatusPaginationDto) {
-      const keyword = dto.keyword || '';
-      const [result, count] = await this.repo
-        .createQueryBuilder('news')
-        .where('news.status = :status', { status: dto.status })
-        .andWhere(
-          new Brackets((qb) => {
-            qb.where(
-              'news.title LIKE :title or news.description LIKE :description ',
-              {
-                title: '%' + keyword + '%',
-                description: '%' + keyword + '%',
-              },
-            );
-          }),
-        )
-        .take(dto.limit)
-        .skip(dto.offset)
-        .getManyAndCount();
-      return { result, count };
+    const keyword = dto.keyword || '';
+    const [result, count] = await this.repo
+      .createQueryBuilder('news')
+      .where('news.status = :status', { status: dto.status })
+      .andWhere(
+        new Brackets((qb) => {
+          qb.where(
+            'news.title LIKE :title or news.description LIKE :description ',
+            {
+              title: '%' + keyword + '%',
+              description: '%' + keyword + '%',
+            },
+          );
+        }),
+      )
+      .take(dto.limit)
+      .skip(dto.offset)
+      .getManyAndCount();
+    return { result, count };
+  }
+
+  async findOne(id: string) {
+    const result = await this.repo.findOne({
+      where: { id },
+    });
+
+    if (!result) {
+      throw new NotFoundException('News not found');
     }
-  
-    async findOne(id: string) {
-      const result = await this.repo.findOne({
-        where: { id },
-      });
-  
-      if (!result) {
-        throw new NotFoundException('News not found');
-      }
-      return result;
+    return result;
+  }
+
+  async remove(id: string) {
+    const news = await this.repo.findOne({ where: { id } });
+    if (!news) {
+      throw new NotFoundException('news not found');
     }
-  
-    async remove(id: string) {
-      const news = await this.repo.findOne({ where: { id } });
-      if (!news) {
-        throw new NotFoundException('news not found');
-      }
-      const obj = Object.assign(news, { status: DefaultStatus.DELETED });
-      return this.repo.save(obj);
-    }
+    const obj = Object.assign(news, { status: DefaultStatus.DELETED });
+    return this.repo.save(obj);
+  }
 }

@@ -1,5 +1,6 @@
 import { AudioLecture } from 'src/audio-lecture/entities/audio-lecture.entity';
 import { CompetitiveExam } from 'src/competitive-exam/entities/competitive-exam.entity';
+import { Course } from 'src/course/entities/course.entity';
 import { DefaultStatus } from 'src/enum';
 import { MockTest } from 'src/mock-test/entities/mock-test.entity';
 import { SchoolClass } from 'src/school-class/entities/school-class.entity';
@@ -70,4 +71,7 @@ export class Subject {
   },
 )
 competitiveExam: CompetitiveExam;
+
+@OneToMany(() => Course, (course) => course.subject)
+courses: Course[];
 }

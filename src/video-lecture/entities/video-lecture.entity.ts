@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { DefaultStatus, PaidOrFree } from 'src/enum';
 import { Subject } from 'src/subject/entities/subject.entity';
+import { Course } from 'src/course/entities/course.entity';
 
 @Entity('video_lecture')
 export class VideoLecture {
@@ -47,4 +48,11 @@ export class VideoLecture {
     onUpdate: 'CASCADE',
   })
   subject: Subject;
+
+  @ManyToOne(() => Course, (course) => course.videoLectures, {
+  cascade:true,
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE',
+})
+course: Course;
 }
