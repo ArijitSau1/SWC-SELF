@@ -35,6 +35,7 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { NewsModule } from './news/news.module';
 import { CourseModule } from './course/course.module';
 import { CourseEnrollmentModule } from './course-enrollment/course-enrollment.module';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   imports: [ConfigModule.forRoot(),
@@ -45,7 +46,7 @@ import { CourseEnrollmentModule } from './course-enrollment/course-enrollment.mo
       username: process.env.RE_USER_NAME,
       password: process.env.RE_DB_PASS,
       database: process.env.RE_DB_NAME,
-      synchronize: true,
+      synchronize: false,
       autoLoadEntities: true,
     }),
     CacheModule.register({
@@ -76,7 +77,8 @@ import { CourseEnrollmentModule } from './course-enrollment/course-enrollment.mo
     MenusModule,
     NewsModule,
     CourseModule,
-    CourseEnrollmentModule
+    CourseEnrollmentModule,
+    PaymentModule
   ],
   controllers: [AppController, NodeMailerController,],
   providers: [AppService, NodeMailerService,],

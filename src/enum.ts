@@ -35,3 +35,9 @@ export enum Gender {
   FEMALE = 'Female',
   OTHER = 'Other',
 }
+
+export enum PaymentStatus {
+  PENDING = 'PENDING',
+  SUCCESS = 'SUCCESS',
+  FAILED = 'FAILED',
+}
