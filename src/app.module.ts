@@ -38,9 +38,10 @@ import { CourseEnrollmentModule } from './course-enrollment/course-enrollment.mo
 import { PaymentModule } from './payment/payment.module';
 
 @Module({
-  imports: [ConfigModule.forRoot(),
+  imports: [
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
-       type: 'mysql',
+      type: 'mysql',
       host: process.env.RE_DB_HOST,
       port: Number(process.env.RE_DB_PORT),
       username: process.env.RE_USER_NAME,
@@ -50,6 +51,10 @@ import { PaymentModule } from './payment/payment.module';
       autoLoadEntities: true,
     }),
     CacheModule.register({
+      isGlobal: true,
+    }),
+
+    ConfigModule.forRoot({
       isGlobal: true,
     }),
     AccountModule,
@@ -78,9 +83,9 @@ import { PaymentModule } from './payment/payment.module';
     NewsModule,
     CourseModule,
     CourseEnrollmentModule,
-    PaymentModule
+    PaymentModule,
   ],
-  controllers: [AppController, NodeMailerController,],
-  providers: [AppService, NodeMailerService,],
+  controllers: [AppController, NodeMailerController],
+  providers: [AppService, NodeMailerService],
 })
 export class AppModule {}
